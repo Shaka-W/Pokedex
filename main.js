@@ -71,6 +71,16 @@ function checkPokemonId(pokemonNumber, responseId) {
   return pokemonNumber;
 }
 
+function setTypes(response, pokemonType, numOfTypes) {
+  if (numOfTypes > 1) {
+    pokemonType.textContent = `Type: ${response.types[0]['type']['name']}/${response.types[1]['type']['name']}`;
+  } else {
+    pokemonType.textContent = `Type: ${response.types[0]['type']['name']}`;
+  }
+
+  return pokemonType;
+}
+
 function displayPokemon() { 
   for (let i = 1; i < 151; i++) {
     fetch(`https://pokeapi.co/api/v2/pokemon/${i}`, {mode: 'cors'})
@@ -84,8 +94,8 @@ function displayPokemon() {
       
       pokemonNumber = checkPokemonId(pokemonNumber, response.id);
       pokemonName.textContent = response.name;
-      pokemonType.textContent = `Type: ${response.types[0]['type']['name']}`;
-
+      pokemonType = setTypes(response, pokemonType, response['types'].length);
+    
       pokemonCard = changePokemonCardBg(pokemonCard, pokemonType);
       pokemonCard.appendChild(pokemonImage);
       pokemonCard.appendChild(pokemonNumber);
